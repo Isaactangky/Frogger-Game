@@ -35,17 +35,104 @@ function moveFrog(e){
   squares[currentIndex].classList.add("frog");
 }
 
-
-
 function autoMoveElements(){
   timeLimit -= 1;
   time.textContent = timeLimit;
-  logLeft.forEach(left => moveLogLeft(left));
-  logRight.forEach(right => moveLogRight(right));
-  carLeft.forEach(left => moveCarLeft(left));
-  carRight.forEach(right => moveCarRight(right));
+  logLeft.forEach(left => moveElements(left, 1, 5));
+  logRight.forEach(right => moveElements(right, -1, 5));
+  carLeft.forEach(left => moveElements(left, +1, 3));
+  carRight.forEach(right => moveElements(right, -1, 3));
 }
 
+function moveElements(element, change, length){
+  const currentClass = element.classList[1]
+  const currentClassType = currentClass[0]
+  const currentNum = parseInt(currentClass[1]);
+  let newNum = (currentNum + change) % length;
+  if (newNum == 0) newNum = length;
+  const newClass = currentClassType + newNum;
+  element.classList.remove(currentClass);
+  element.classList.add(newClass);
+}
+
+function checkLose(){
+  const currentPosition = squares[currentIndex]
+  if (currentPosition.classList.contains('c1') ||
+      currentPosition.classList.contains('l4') ||
+      currentPosition.classList.contains('l5') ||
+      timeLimit <= 0
+  ){
+    result.textContent = 'GAME OVER!';
+    clearInterval(timerID);
+    clearInterval(timerOutcome);
+    timerID = null;
+    timerOutcome = null;
+    currentPosition.classList.remove('frog');
+    document.removeEventListener('keyup', moveFrog);
+    started = false;
+    button.textContent = "START";
+  }
+}
+
+function checkWin(){
+  if (squares[currentIndex].classList.contains('ending-block')){
+    result.textContent = 'SUCCESS!';
+    clearInterval(timerID);
+    clearInterval(timerOutcome);
+    timerID = null;
+    timerOutcome = null;
+    document.removeEventListener('keyup', moveFrog);
+    started = false;
+    button.textContent = "START";
+  }
+}
+function checkOutcome(){
+  checkWin();
+  checkLose();
+}
+
+function resetVariables(){
+  result.textContent = "";
+  squares[currentIndex].classList.remove('frog');
+  currentIndex = 76;
+  squares[currentIndex].classList.add('frog');
+  timeLimit = 20;
+  
+}
+
+button.addEventListener('click', function(){
+  // not started
+  if (!started){
+    resetVariables();
+    timerID = setInterval(autoMoveElements, 1000);
+    timerOutcome = setInterval(checkOutcome, 50);
+    document.addEventListener("keyup", moveFrog);
+    button.textContent = "PAUSE";
+    started = true;
+  // has started
+  }else {
+    // to pause
+    if (timerID != null){
+      clearInterval(timerID);
+      clearInterval(timerOutcome);
+      timerID = null;
+      timerOutcome = null;
+      document.removeEventListener("keyup", moveFrog);
+      button.textContent = "START";
+    }
+    // to restart
+    else{
+      timerID = setInterval(autoMoveElements, 1000);
+      timerOutcome = setInterval(checkOutcome, 50);
+      document.addEventListener("keyup", moveFrog);
+      button.textContent = "PAUSE";
+    }
+  }
+});
+
+
+
+/* 
 function moveLogLeft(left){
   switch (true){
     case left.classList.contains('l1'):
@@ -126,80 +213,4 @@ function moveCarRight(right){
       right.classList.add('c2')
       break;
   }
-}
-
-
-function checkLose(){
-  const currentPosition = squares[currentIndex]
-  if (currentPosition.classList.contains('c1') ||
-      currentPosition.classList.contains('l4') ||
-      currentPosition.classList.contains('l5') ||
-      timeLimit <= 0
-  ){
-    result.textContent = 'GAME OVER!';
-    clearInterval(timerID);
-    clearInterval(timerOutcome);
-    timerID = null;
-    timerOutcome = null;
-    currentPosition.classList.remove('frog');
-    document.removeEventListener('keyup', moveFrog);
-    started = false;
-    button.textContent = "START";
-  }
-}
-
-function checkWin(){
-  if (squares[currentIndex].classList.contains('ending-block')){
-    result.textContent = 'SUCCESS!';
-    clearInterval(timerID);
-    clearInterval(timerOutcome);
-    timerID = null;
-    timerOutcome = null;
-    document.removeEventListener('keyup', moveFrog);
-    started = false;
-    button.textContent = "START";
-  }
-}
-function checkOutcome(){
-  checkWin();
-  checkLose();
-}
-
-function resetVariables(){
-  result.textContent = "";
-  squares[currentIndex].classList.remove('frog');
-  currentIndex = 76;
-  squares[currentIndex].classList.add('frog');
-  timeLimit = 20;
-  
-}
-
-button.addEventListener('click', function(){
-  // not started
-  if (!started){
-    resetVariables();
-    timerID = setInterval(autoMoveElements, 1000);
-    timerOutcome = setInterval(checkOutcome, 50);
-    document.addEventListener("keyup", moveFrog);
-    button.textContent = "PAUSE";
-    started = true;
-  // has started
-  }else {
-    // to pause
-    if (timerID != null){
-      clearInterval(timerID);
-      clearInterval(timerOutcome);
-      timerID = null;
-      timerOutcome = null;
-      document.removeEventListener("keyup", moveFrog);
-      button.textContent = "START";
-    }
-    // to restart
-    else{
-      timerID = setInterval(autoMoveElements, 1000);
-      timerOutcome = setInterval(checkOutcome, 50);
-      document.addEventListener("keyup", moveFrog);
-      button.textContent = "PAUSE";
-    }
-  }
-});
+} */

@@ -1,0 +1,79 @@
+body{
+  width: 100%;
+  height: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: lightgoldenrodyellow;
+  margin: 0;
+  margin-top: 50px;
+}
+.text-wrapper{
+  width: 360px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 1rem;
+}
+#result-display{
+  width: 70%;
+}
+#result{
+  width: 50%;
+  height: 100%;
+}
+.button{
+  width: 360px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+button{
+  width: 100px;
+  height: 40px;
+  padding: 5px;
+  font-weight: 600;
+  background-color: aliceblue;
+  border: 1px solid lightblue;
+}
+.board{
+  border: 2px solid lightgreen;
+  height: 360px;
+  width: 360px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.board div{
+  height: 40px;
+  width: 40px;
+}
+.ending-block{
+  background-color: red;
+}
+.starting-block{
+  background-color: blue;
+}
+
+
+
+.l1, .l2, .l3{
+  background-color: brown;
+}
+
+.l4, .l5{
+  background-color: lightblue;
+}
+
+.c1{
+  background-color: black;
+}
+
+.c2, .c3{
+  background-color: lightgray;
+}
+
+.frog{
+  background-image: url("images/frog.svg");
+  
+}
